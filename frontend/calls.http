@@ -1,0 +1,1 @@
+GET http://127.0.0.1:8000/default/api/v1/navigation/?format=json HTTP/1.1

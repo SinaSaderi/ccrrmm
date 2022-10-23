@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'project_project_list' %}">Project Listing</a></p>
+<table class="table">
+<tr><td>name</td><td>{{ object.name }}</td></tr>
+<tr><td>slug</td><td>{{ object.slug }}</td></tr>
+<tr><td>created</td><td>{{ object.created }}</td></tr>
+<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
+<tr><td>area</td><td>{{ object.area }}</td></tr>
+<tr><td>bedrooms</td><td>{{ object.bedrooms }}</td></tr>
+<tr><td>start_size</td><td>{{ object.start_size }}</td></tr>
+<tr><td>start_price</td><td>{{ object.start_price }}</td></tr>
+<tr><td>down_payment</td><td>{{ object.down_payment }}</td></tr>
+<tr><td>payment_plan</td><td>{{ object.payment_plan }}</td></tr>
+<tr><td>dld</td><td>{{ object.dld }}</td></tr>
+<tr><td>service_charge</td><td>{{ object.service_charge }}</td></tr>
+<tr><td>handover_date</td><td>{{ object.handover_date }}</td></tr>
+<tr><td>description</td><td>{{ object.description }}</td></tr>
+<tr><td>commision</td><td>{{ object.commision }}</td></tr>
+<tr><td>contact</td><td>{{ object.contact }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Project</a>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'project_project_list' %}">Project Listing</a></p>
+<table class="table">
+<tr>
+<td>ID</td><td>Link</td>
+    <td>name</td>
+    <td>slug</td>
+    <td>created</td>
+    <td>last_updated</td>
+    <td>area</td>
+    <td>bedrooms</td>
+    <td>start_size</td>
+    <td>start_price</td>
+    <td>down_payment</td>
+    <td>payment_plan</td>
+    <td>dld</td>
+    <td>service_charge</td>
+    <td>handover_date</td>
+    <td>description</td>
+    <td>commision</td>
+    <td>contact</td>
+</tr>
+{% for object in object_list %}
+<tr>
+    <td>{{object.pk}}</td>
+    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+    <td>{{ object.name }}</td>
+    <td>{{ object.slug }}</td>
+    <td>{{ object.created }}</td>
+    <td>{{ object.last_updated }}</td>
+    <td>{{ object.area }}</td>
+    <td>{{ object.bedrooms }}</td>
+    <td>{{ object.start_size }}</td>
+    <td>{{ object.start_price }}</td>
+    <td>{{ object.down_payment }}</td>
+    <td>{{ object.payment_plan }}</td>
+    <td>{{ object.dld }}</td>
+    <td>{{ object.service_charge }}</td>
+    <td>{{ object.handover_date }}</td>
+    <td>{{ object.description }}</td>
+    <td>{{ object.commision }}</td>
+    <td>{{ object.contact }}</td>
+</tr>
+{% endfor %}
+</table><a class="btn btn-primary" href="{% url 'project_project_create' %}">Create new Project</a>
+{% endblock %}
