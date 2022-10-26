@@ -37,7 +37,7 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Index from "layouts/index";
+import Lists from "layouts/lists";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -47,6 +47,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import UserForm from "layouts/forms";
 
 const routes = [
   {
@@ -63,7 +64,7 @@ const routes = [
     key: "mangers",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/managers",
-    component: <Index group="manager" title="Sale Managers" />,
+    component: <Lists group="manager" title="Sale Managers" />,
   },
   {
     type: "collapse",
@@ -71,7 +72,7 @@ const routes = [
     key: "agents",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/agents",
-    component: <Index group="agent" title="Agents" />,
+    component: <Lists group="agent" title="Agents" />,
   },
   {
     type: "collapse",
@@ -120,6 +121,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
+  },
+  {
+    type: "collapse",
+    name: "User Form",
+    key: "user-form",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/form",
+    component: <UserForm group="manager" title="Add new Sale Manager" />,
   },
 ];
 

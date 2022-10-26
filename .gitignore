@@ -23,6 +23,7 @@ backend/source/settings.py
 backend/*.pyc
 __pycache__/
 backend/__pycache__/
+backend/env
 web/
 
 

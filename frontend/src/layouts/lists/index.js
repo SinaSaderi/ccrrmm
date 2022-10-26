@@ -28,6 +28,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import MDButton from "components/MDButton";
 
 // eslint-disable-next-line import/no-named-as-default
 // Graphql components
@@ -35,12 +36,14 @@ import { useQuery } from "@apollo/client";
 import LoadingComponent from "components/LoadingComponent";
 import ErrorComponent from "components/ErrorComponent";
 
-import saleManagerData from "layouts/index/data/saleManagerData";
-import agentData from "layouts/index/data/agentData";
+import saleManagerData from "layouts/lists/data/saleManagerData";
+import agentData from "layouts/lists/data/agentData";
 
-import USERS_LIST from "layouts/index/Queries";
+import USERS_LIST from "layouts/lists/Queries";
 
-function Index({ group, title }) {
+import Icon from "@mui/material/Icon";
+
+function Lists({ group, title }) {
   const { data, loading, error } = useQuery(USERS_LIST, {
     variables: { group },
   });
@@ -81,10 +84,15 @@ function Index({ group, title }) {
                 bgColor="secondary"
                 borderRadius="lg"
                 coloredShadow="info"
+                sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <MDTypography variant="h6" color="white">
                   {title}
                 </MDTypography>
+                <MDButton variant="gradient" color="success">
+                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                  &nbsp;Add new {group}
+                </MDButton>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
@@ -106,14 +114,14 @@ function Index({ group, title }) {
   );
 }
 
-Index.defaultProps = {
+Lists.defaultProps = {
   group: "",
   title: "list",
 };
 
-Index.propTypes = {
+Lists.propTypes = {
   group: PropTypes.string,
   title: PropTypes.string,
 };
 
-export default Index;
+export default Lists;
