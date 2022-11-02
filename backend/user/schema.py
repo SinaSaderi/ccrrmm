@@ -5,13 +5,12 @@ from .models import *
 from .defs import *
 
 from django.contrib.auth.hashers import make_password
-import jwt
 from user.validators import validate_create_user, validate_login
 from user.utils import generate_token, verify_token
 from django.contrib.auth.hashers import check_password
-import inspect
-from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import Group
+
 
 from graphene_django.filter import DjangoFilterConnectionField
 def get_user(info):
@@ -69,9 +68,21 @@ class CreateUser(graphene.Mutation):
             raise Exception(errors)
         
         ok = valid
-        user_instance = User(email=input.email)
-        user_instance.password = make_password(input.password)
-        user_instance.save()
+
+        user_instance = User.objects.create_user(
+            email=input.email,
+            password = input.password,
+            username = input.username,
+            first_name = input.first_name,
+            last_name = input.last_name,
+            mobile = input.mobile,
+            addr = input.address,
+            customer = Customer.objects.get(pk=1)
+        )
+
+        group = Group.objects.get(name=input.group)
+        group.user_set.add(user_instance)
+
         token = generate_token(user_instance)
 
         return CreateUser(ok=ok, errors=errors, token=token, user=user_instance)

@@ -1,3 +1,4 @@
+import email
 import graphql
 from email_validator import validate_email, EmailNotValidError
 from user.models import User
@@ -33,11 +34,16 @@ def validate_create_user(input):
 
     regex = '^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$'
 
+    try:
+        user = User.objects.get(email=input.email)
+    except User.DoesNotExist:
+        user = None
+
     if input.email.strip() == '':
         errors["email"] = "Email must not be empty"
     elif (re.search(regex, input.email)) is None:
         errors["email"] = "The email address is not valid"
-    elif User.nodes.get_or_none(email=input.email):
+    elif user:
         errors["email"] = "This email is taken"
 
     if input.password.strip() == '':

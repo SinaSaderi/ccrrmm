@@ -17,7 +17,13 @@ class GroupType(DjangoObjectType):
         fields = "__all__"
 
 class UserInput(graphene.InputObjectType):
+    first_name = graphene.String()
+    last_name = graphene.String()
+    username = graphene.String()
     email = graphene.String()
+    mobile = graphene.String()
+    address = graphene.String()
     password = graphene.String()
     confirm_password = graphene.String()
+    group = graphene.String()
 

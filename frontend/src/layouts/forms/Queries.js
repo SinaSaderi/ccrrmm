@@ -1,29 +1,38 @@
 import { gql } from "@apollo/client";
 
-const USER_FIELDS = gql`
-  fragment UserFields on UserType {
-    id
-    firstName
-    lastName
-    username
-    email
-    mobile
-  }
-`;
-
-const USERS_LIST = gql`
-  ${USER_FIELDS}
-  query users($group: String) {
-    users(group: $group) {
-      ...UserFields
-      relatedUsers {
-        ...UserFields
-        groups {
-          name
-        }
+const REGISTER_USER = gql`
+  mutation createUser(
+    $group: String!
+    $firstName: String!
+    $lastName: String!
+    $mobile: String!
+    $address: String!
+    $email: String!
+    $username: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    createUser(
+      input: {
+        group: $group
+        firstName: $firstName
+        lastName: $lastName
+        mobile: $mobile
+        address: $address
+        email: $email
+        username: $username
+        password: $password
+        confirmPassword: $confirmPassword
+      }
+    ) {
+      ok
+      token
+      user {
+        id
+        email
       }
     }
   }
 `;
 
-export default USERS_LIST;
+export default REGISTER_USER;
