@@ -2,6 +2,9 @@ frontend/node_modules/
 *.env
 .vscode/
 .venv/
+env
+venv
+.env
 
 db.sqlite3
 
