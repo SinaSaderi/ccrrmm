@@ -30,6 +30,11 @@ class MyUserAdmin(UserAdmin):
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
         (_("Customer"), {"fields": ("customer",)}),
+        (_("Contact"), {"fields": ("mobile", "phone", "addr")}),
+        (_("Avatar"), {"fields": ("avatar", )}),
+        (_("Related users"), {"fields": ("related_users", )}),
+        
+
     )
     add_fieldsets = (
         (

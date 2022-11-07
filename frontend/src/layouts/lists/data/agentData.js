@@ -7,6 +7,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
 import ActionsButton from "components/Common/ActionsButton";
+import RelatedUser from "layouts/lists/componenets/RelatedUser";
 
 import Button from "@mui/material/Button";
 
@@ -54,12 +55,8 @@ export default function datas(data) {
           {users[i].mobile}
         </MDTypography>
       ),
-      manager: (
-        <Button>
-          {users[i].relatedUsers[0].firstName} {users[i].relatedUsers[0].lastName}
-        </Button>
-      ),
-      clients: <Button> {counts.lead} Clients</Button>,
+      manager: <RelatedUser relatedUsers={relUsers} value="manager" />,
+      clients: <Button> {counts.client} Clients</Button>,
       actions: <ActionsButton group="agent" />,
     });
   }

@@ -76,6 +76,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Clients",
+    key: "Clients",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/clients",
+    component: <Lists group="client" title="Clients" />,
+  },
+  {
+    type: "collapse",
     name: "Billing",
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
@@ -123,12 +131,27 @@ const routes = [
     component: <SignUp />,
   },
   {
-    type: "collapse",
-    name: "User Form",
-    key: "user-form",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/form",
-    component: <UserForm group="manager" title="Add new Sale Manager" />,
+    type: "route",
+    name: "Add new manager",
+    key: "manager-form",
+    route: "/managers/new",
+    component: <UserForm group="manager" title="Add New Sale Manager" />,
+  },
+  {
+    type: "route",
+    name: "Add new agent",
+    key: "agent-form",
+    route: "/agents/new",
+    title: "Add New Agent",
+    component: <UserForm group="agent" title="Add New Agent" />,
+  },
+  {
+    type: "route",
+    name: "Add new client",
+    key: "client-form",
+    route: "/clients/new",
+    title: "Add New Client",
+    component: <UserForm group="client" title="Add New Client" />,
   },
 ];
 

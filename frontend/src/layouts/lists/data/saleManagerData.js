@@ -54,8 +54,8 @@ export default function datas(data) {
           {users[i].mobile}
         </MDTypography>
       ),
-      agents: <Button>{counts.agent} Agents</Button>,
-      clients: <Button>{counts.lead} Clients</Button>,
+      agents: <Button>{counts.agent ? counts.agent : 0} Agents</Button>,
+      clients: <Button>{counts.client ? counts.client : 0} Clients</Button>,
       actions: <ActionsButton group="manager" />,
     });
   }

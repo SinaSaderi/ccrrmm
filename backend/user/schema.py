@@ -15,7 +15,9 @@ from django.contrib.auth.models import Group
 from graphene_django.filter import DjangoFilterConnectionField
 def get_user(info):
     auth_header = info.context.META.get('HTTP_AUTHORIZATION')
+    print("auth_header", auth_header)
     payload = verify_token(auth_header)
+    print("payload", payload)
     if payload['uid'] is not None:
         return User.objects.get(pk=payload['uid'])
     return None
@@ -34,8 +36,8 @@ class Query(graphene.ObjectType):
 
     def resolve_users(self, info, **kwargs):
         group = kwargs.get("group", None)
+        print("**********8", info)
         user = get_user(info)
-
         if group is not None:
             return User.objects.filter(groups__name=group)
 
@@ -59,14 +61,21 @@ class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
     errors = graphene.String()
 
+    
+
     @staticmethod
     def mutate(root, info, input=None):
         # TODO Store token
 
+        print("ooooooooo")
+
         errors, valid = validate_create_user(input)
+        print("eeee", errors)
         if not valid:
             raise Exception(errors)
-        
+
+        print("iiiiiii", input)
+
         ok = valid
 
         user_instance = User.objects.create_user(
@@ -105,7 +114,7 @@ class LoginUser(graphene.Mutation):
     def mutate(root, info, input=None):
         errors, valid = validate_login(input)
         
-        print("sssssss")
+        print("sssssss", input)
         if not valid:
             raise Exception(errors)
         try:

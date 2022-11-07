@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+import { Link } from "react-router-dom";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -36,8 +37,7 @@ import { useQuery } from "@apollo/client";
 import LoadingComponent from "components/LoadingComponent";
 import ErrorComponent from "components/ErrorComponent";
 
-import saleManagerData from "layouts/lists/data/saleManagerData";
-import agentData from "layouts/lists/data/agentData";
+import { modules } from "util/modules";
 
 import USERS_LIST from "layouts/lists/Queries";
 
@@ -54,19 +54,7 @@ function Lists({ group, title }) {
     return <ErrorComponent message="There was an error loading data" />;
   }
 
-  const mydata = data;
-
-  console.log("group", group);
-
-  let cr = function () {};
-
-  if (group === "manager") {
-    cr = saleManagerData(mydata);
-  } else if (group === "agent") {
-    cr = agentData(mydata);
-  }
-
-  const { columns: uColumns, rows: uRows } = cr;
+  const { columns: uColumns, rows: uRows } = modules[group].data(data);
 
   return (
     <DashboardLayout>
@@ -81,29 +69,31 @@ function Lists({ group, title }) {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="secondary"
+                bgColor={modules[group].class}
                 borderRadius="lg"
-                coloredShadow="info"
+                coloredShadow={modules[group].class}
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
-                <MDTypography variant="h6" color="white">
+                <MDTypography variant="h3" color={modules[group].color}>
                   {title}
                 </MDTypography>
-                <MDButton variant="gradient" color="success">
+                <MDButton variant="gradient" component={Link} to={`/${group}s/new`}>
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                   &nbsp;Add new {group}
                 </MDButton>
               </MDBox>
               <MDBox pt={3}>
-                <DataTable
-                  // eslint-disable-next-line no-undef
-                  table={{ columns: uColumns, rows: uRows }}
-                  canSearch
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                />
+                {uColumns && (
+                  <DataTable
+                    // eslint-disable-next-line no-undef
+                    table={{ columns: uColumns, rows: uRows }}
+                    canSearch
+                    isSorted={false}
+                    entriesPerPage={false}
+                    showTotalEntries={false}
+                    noEndBorder
+                  />
+                )}
               </MDBox>
             </Card>
           </Grid>

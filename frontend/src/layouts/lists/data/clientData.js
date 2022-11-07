@@ -7,8 +7,9 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
 import ActionsButton from "components/Common/ActionsButton";
+import RelatedUser from "layouts/lists/componenets/RelatedUser";
 
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 
 export default function datas(data) {
   const orderRows = [];
@@ -24,6 +25,7 @@ export default function datas(data) {
   );
 
   const { users } = data;
+
   for (let i = 0; i < users.length; i += 1) {
     const relUsers = users[i].relatedUsers;
     const counts = {};
@@ -54,12 +56,13 @@ export default function datas(data) {
           {users[i].mobile}
         </MDTypography>
       ),
-      manager: (
-        <Button>
-          {users[i].relatedUsers[0].firstName} {users[i].relatedUsers[0].lastName}
-        </Button>
+      budget: (
+        <MDTypography variant="string" color="text" fontWeight="medium">
+          {users[i].budget}
+        </MDTypography>
       ),
-      clients: <Button> {counts.lead} Clients</Button>,
+      agent: <RelatedUser relatedUsers={relUsers} value="agent" />,
+      manager: <RelatedUser relatedUsers={relUsers} value="manager" />,
       actions: <ActionsButton group="agent" />,
     });
   }
@@ -69,8 +72,9 @@ export default function datas(data) {
       { Header: "Username", accessor: "username", align: "left" },
       { Header: "Email", accessor: "email", align: "center" },
       { Header: "Moile", accessor: "mobile", align: "center" },
+      { Header: "Budget", accessor: "budget", align: "center" },
+      { Header: "Agent", accessor: "agent", align: "center" },
       { Header: "Sale Manger", accessor: "manager", align: "center" },
-      { Header: "Sale Manger", accessor: "clients", align: "center" },
       { Header: "Actions", accessor: "actions", align: "center" },
     ],
 

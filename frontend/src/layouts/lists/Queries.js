@@ -8,6 +8,7 @@ const USER_FIELDS = gql`
     username
     email
     mobile
+    budget
   }
 `;
 

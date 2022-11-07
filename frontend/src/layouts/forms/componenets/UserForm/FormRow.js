@@ -1,15 +1,20 @@
+/* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
 import MDBox from "components/MDBox";
 
 import FormField from "layouts/forms/componenets/UserForm/FormField";
 import React from "react";
 
-function FormRow({ row }, props) {
+function FormRow(props) {
+  const { row, errors, ...rest } = props;
   return (
+    // eslint-disable-next-line prettier/prettier
     <MDBox display="flex" flexDirection="row" ml={-3} mr={-3} width="calc(100% + 24px)">
-      {row.map((field) => (
-        <FormField key={field.name} field={field} {...props} />
-      ))}
+      {row.map((field) => {
+        const dataProps = { ...field, ...errors };
+        // eslint-disable-next-line prettier/prettier
+        return <FormField key={field.name} errors={errors} {...dataProps} field={field} {...rest} />;
+      })}
     </MDBox>
   );
 }

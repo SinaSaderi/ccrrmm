@@ -24,6 +24,8 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 
+import { useLocation } from "react-router-dom";
+
 import * as Yup from "yup";
 import { Formik } from "formik";
 
@@ -31,31 +33,26 @@ import { Formik } from "formik";
 import FormRow from "layouts/forms/componenets/UserForm/FormRow";
 
 import { useMutation } from "@apollo/client";
+import { modules } from "util/modules";
 
 import REGISTER_USER from "layouts/forms/Queries";
 
-function UserForm({ fields }) {
-  // const [errors, setErrors] = useState({});
+function UserForm({ fields, group }) {
+  console.log("useLocationssssss", useLocation().pathname.split("/").slice(1));
   // const navigation = useNavigate();
   const formRows = fields;
 
   const initialValues = {};
+  const validations = {};
   for (let i = 0; i < formRows.length; i += 1) {
     for (let f = 0; f < formRows[i].length; f += 1) {
-      initialValues[formRows[i][f].name] = "";
+      initialValues[formRows[i][f].name] =
+        formRows[i][f].defaultValue !== undefined ? formRows[i][f].defaultValue : "";
+      if (formRows[i][f].validation !== undefined) {
+        validations[formRows[i][f].name] = formRows[i][f].validation;
+      }
     }
   }
-
-  // eslint-disable-next-line no-use-before-define
-  // const { onChange, onSubmit, values } = useForm(registerUser, initialValues, setErrors);
-
-  // for (let i = 0; i < formRows.length; i += 1) {
-  //   for (let f = 0; f < formRows[i].length; f += 1) {
-  //     // formRows[i][f].error = !!errors[formRows[i][f].name];
-  //     // formRows[i][f].value = values[formRows[i][f].name];
-  //     // formRows[i][f].onChange = onChange;
-  //   }
-  // }
 
   const [createUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { createUser: userData } }) {
@@ -68,50 +65,45 @@ function UserForm({ fields }) {
     },
   });
 
-  // function registerUser() {
-  //   createUser();
-  // }
-
   const ref = useRef(null);
-  console.log(ref);
+  console.log("ref", ref);
   return (
     <Formik
       initialValues={{
         ...initialValues,
       }}
-      validationSchema={Yup.object().shape({
-        firstName: Yup.string().required("firstName is required"),
-      })}
+      validationSchema={Yup.object().shape(validations)}
       onSubmit={(values) => {
         console.log("aaaaa", JSON.stringify(values));
         createUser({
-          variables: {
-            orderData: JSON.stringify(values).replace(/"/g, "\\'"),
-          },
+          variables: values,
         });
       }}
     >
-      {({ isValid, handleSubmit }, props) => (
+      {({ isValid, handleSubmit, errors, touched, ...props }) => (
         <MDBox width="100%" pt={3} pb={3}>
-          <MDTypography variant="h4">Manager information</MDTypography>
+          <MDTypography variant="h4" sx={{ textTransform: "capitalize" }}>
+            {group} information
+          </MDTypography>
           <MDBox
             component="form"
             autoComplete="off"
             onSubmit={handleSubmit}
             className={loading ? "loading" : ""}
+            isValidating
           >
             {formRows.map((row) => (
-              <FormRow key={row[0].name} row={row} {...props} />
+              <FormRow key={row[0].name} row={row} errors={errors} touched={touched} {...props} />
             ))}
             <MDBox mt={4} mb={1}>
               <MDButton
                 type="submit"
                 variant="gradient"
-                color="info"
+                color={modules[group].class}
                 fullWidth
-                disabled={Boolean(!isValid)}
+                // disabled={Boolean(!isValid)}
               >
-                create manager
+                create {group}
               </MDButton>
             </MDBox>
           </MDBox>
@@ -125,32 +117,68 @@ function UserForm({ fields }) {
 UserForm.defaultProps = {
   fields: [
     [
-      { label: "Group", name: "group" },
-      { label: "First name", name: "firstName", id: "firstName" },
-      { label: "Last name", name: "lastName" },
+      { name: "group", type: "hidden", defaultValue: "client" },
+      {
+        label: "First name",
+        name: "firstName",
+        id: "firstName",
+        validation: Yup.string().required("First name is required"),
+      },
+      {
+        label: "Last name",
+        name: "lastName",
+        validation: Yup.string().required("Last name is required"),
+      },
     ],
     [
-      { label: "Username", name: "username" },
-      { label: "Email", name: "email", type: "email" },
+      {
+        label: "Username",
+        name: "username",
+        validation: Yup.string().required("Username is required"),
+      },
+      {
+        label: "Email",
+        name: "email",
+        type: "email",
+        validation: Yup.string().email("Invalid email").required("Email is required"),
+      },
     ],
     [
-      { label: "Mobile", name: "mobile" },
-      { label: "Address", name: "address" },
+      {
+        label: "Mobile",
+        name: "mobile",
+        validation: Yup.string().required("Mobile is required"),
+      },
+      {
+        label: "Address",
+        name: "address",
+        validation: Yup.string().required("Address is required"),
+      },
     ],
     [
-      { label: "Password", name: "password", type: "password" },
+      {
+        label: "Password",
+        name: "password",
+        type: "password",
+        validation: Yup.string()
+          .required("Password is required")
+          .min(5, "Your password is too short."),
+      },
       {
         label: "Confirm Password",
         name: "confirmPassword",
         type: "password",
+        validation: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
       },
     ],
   ],
+  group: "",
 };
 
 // Typechecking props for the UserForm
 UserForm.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.array),
+  group: PropTypes.string,
 };
 
 export default UserForm;
