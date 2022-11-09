@@ -4,7 +4,7 @@ import * as Yup from "yup";
 export default {
   fields: [
     [
-      { name: "group", type: "hidden", defaultValue: "client" },
+      { name: "group", type: "hidden", defaultValue: "manager" },
       {
         label: "First name",
         name: "firstName",
@@ -27,7 +27,9 @@ export default {
         label: "Email",
         name: "email",
         type: "email",
-        validation: Yup.string().email("Invalid email").required("Email is required"),
+        validation: Yup.string()
+          .email("Invalid email")
+          .required("Email is required"),
       },
     ],
     [
@@ -55,7 +57,10 @@ export default {
         label: "Confirm Password",
         name: "confirmPassword",
         type: "password",
-        validation: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
+        validation: Yup.string().oneOf(
+          [Yup.ref("password"), null],
+          "Passwords must match"
+        ),
       },
     ],
   ],

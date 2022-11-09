@@ -26,4 +26,9 @@ class UserInput(graphene.InputObjectType):
     password = graphene.String()
     confirm_password = graphene.String()
     group = graphene.String()
+    userType = graphene.String()
+    realestate_commision = graphene.Int()
+    agent_commision = graphene.Int()
+    budget = graphene.Int()
+    
 

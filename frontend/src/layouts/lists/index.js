@@ -77,7 +77,11 @@ function Lists({ group, title }) {
                 <MDTypography variant="h3" color={modules[group].color}>
                   {title}
                 </MDTypography>
-                <MDButton variant="gradient" component={Link} to={`/${group}s/new`}>
+                <MDButton
+                  variant="gradient"
+                  component={Link}
+                  to={`/${group}s/new`}
+                >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                   &nbsp;Add new {group}
                 </MDButton>

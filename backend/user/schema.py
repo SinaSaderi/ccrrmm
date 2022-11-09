@@ -36,20 +36,13 @@ class Query(graphene.ObjectType):
 
     def resolve_users(self, info, **kwargs):
         group = kwargs.get("group", None)
-        print("**********8", info)
         user = get_user(info)
-        if group is not None:
+        if group is not None and group != "":
+            if group == "user":
+                return User.objects.all()
             return User.objects.filter(groups__name=group)
-
-        # if user is not None or group is not None:
-        #     group_name = user.groups.all()[0].name
-
-        #     if group_name == "manager":
-        #         return user.related_users.filter(groups__name=group)
-
-        users = User.objects.all()
         
-        return users
+        return []
 
 
 class CreateUser(graphene.Mutation):
@@ -67,16 +60,17 @@ class CreateUser(graphene.Mutation):
     def mutate(root, info, input=None):
         # TODO Store token
 
-        print("ooooooooo")
-
         errors, valid = validate_create_user(input)
-        print("eeee", errors)
+
         if not valid:
             raise Exception(errors)
 
-        print("iiiiiii", input)
-
         ok = valid
+
+        if input.group == "client":
+            input.username = input.email
+
+        print("UUUUU", input)
 
         user_instance = User.objects.create_user(
             email=input.email,
@@ -86,15 +80,24 @@ class CreateUser(graphene.Mutation):
             last_name = input.last_name,
             mobile = input.mobile,
             addr = input.address,
-            customer = Customer.objects.get(pk=1)
+            customer = Customer.objects.get(pk=1),
+            realestate_commision = input.realestate_commision,
+            agent_commision = input.agent_commision,
+            budget = input.budget,
         )
 
-        group = Group.objects.get(name=input.group)
+        print("******", user_instance)
+
+        group = input.group
+        if input.userType is not None and input.group == "user":
+            group = input.userType
+
+        group = Group.objects.get(name=group)
         group.user_set.add(user_instance)
 
         token = generate_token(user_instance)
 
-        return CreateUser(ok=ok, errors=errors, token=token, user=user_instance)
+        return CreateUser(ok=ok, errors=errors, token=token, user=user_instance, group=input.group)
 
 
 

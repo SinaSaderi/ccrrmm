@@ -33,8 +33,6 @@ class MyUserAdmin(UserAdmin):
         (_("Contact"), {"fields": ("mobile", "phone", "addr")}),
         (_("Avatar"), {"fields": ("avatar", )}),
         (_("Related users"), {"fields": ("related_users", )}),
-        
-
     )
     add_fieldsets = (
         (
@@ -115,7 +113,7 @@ class LeadAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(LeadAdmin, self).get_queryset(request)
-        return qs.filter(groups__name='lead')
+        return qs.filter(groups__name='client')
 
 @admin.register(Comment)
 class Comment(admin.ModelAdmin):

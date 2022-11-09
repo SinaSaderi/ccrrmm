@@ -7,6 +7,9 @@ import agentModule from "layouts/forms/modules/agentModule";
 import clientData from "layouts/lists/data/clientData";
 import clientModule from "layouts/forms/modules/clientModule";
 
+import userData from "layouts/lists/data/userData";
+import userModule from "layouts/forms/modules/userModule";
+
 // eslint-disable-next-line import/prefer-default-export
 export const modules = {
   manager: {
@@ -26,5 +29,11 @@ export const modules = {
     color: "white",
     data: clientData,
     fields: clientModule.fields,
+  },
+  user: {
+    class: "secondary",
+    color: "white",
+    data: userData,
+    fields: userModule.fields,
   },
 };

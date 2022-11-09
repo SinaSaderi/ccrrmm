@@ -9,6 +9,9 @@ const USER_FIELDS = gql`
     email
     mobile
     budget
+    groups {
+      name
+    }
   }
 `;
 
@@ -19,9 +22,6 @@ const USERS_LIST = gql`
       ...UserFields
       relatedUsers {
         ...UserFields
-        groups {
-          name
-        }
       }
     }
   }

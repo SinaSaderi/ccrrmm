@@ -84,6 +84,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Users",
+    key: "Users",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/users",
+    component: <Lists group="user" title="Users" />,
+  },
+  {
+    type: "collapse",
     name: "Billing",
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
@@ -152,6 +160,14 @@ const routes = [
     route: "/clients/new",
     title: "Add New Client",
     component: <UserForm group="client" title="Add New Client" />,
+  },
+  {
+    type: "route",
+    name: "Add new user",
+    key: "user-form",
+    route: "/users/new",
+    title: "Add New User",
+    component: <UserForm group="user" title="Add New User" />,
   },
 ];
 

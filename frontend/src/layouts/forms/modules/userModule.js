@@ -4,7 +4,19 @@ import * as Yup from "yup";
 export default {
   fields: [
     [
-      { name: "group", type: "hidden", defaultValue: "agent" },
+      { name: "group", type: "hidden", defaultValue: "user" },
+      {
+        label: "User Type",
+        name: "userType",
+        id: "userType",
+        fiel_type: "select",
+        validation: Yup.string().required("User type is required"),
+        items: [
+          { value: "admin", title: "Admin" },
+          { value: "manager", title: "Sale Manager" },
+          { value: "agent", title: "Agent" },
+        ],
+      },
       {
         label: "First name",
         name: "firstName",
@@ -42,18 +54,6 @@ export default {
         label: "Address",
         name: "address",
         validation: Yup.string().required("Address is required"),
-      },
-    ],
-    [
-      {
-        label: "Realestate Commission (%)",
-        name: "realestate_commision",
-        validation: Yup.string().required("Commision is required"),
-      },
-      {
-        label: "Agent Comission (%)",
-        name: "agent_comission",
-        validation: Yup.string().required("Comission is required"),
       },
     ],
     [

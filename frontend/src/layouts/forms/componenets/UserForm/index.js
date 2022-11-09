@@ -24,8 +24,6 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 
-import { useLocation } from "react-router-dom";
-
 import * as Yup from "yup";
 import { Formik } from "formik";
 
@@ -38,7 +36,6 @@ import { modules } from "util/modules";
 import REGISTER_USER from "layouts/forms/Queries";
 
 function UserForm({ fields, group }) {
-  console.log("useLocationssssss", useLocation().pathname.split("/").slice(1));
   // const navigation = useNavigate();
   const formRows = fields;
 
@@ -47,7 +44,9 @@ function UserForm({ fields, group }) {
   for (let i = 0; i < formRows.length; i += 1) {
     for (let f = 0; f < formRows[i].length; f += 1) {
       initialValues[formRows[i][f].name] =
-        formRows[i][f].defaultValue !== undefined ? formRows[i][f].defaultValue : "";
+        formRows[i][f].defaultValue !== undefined
+          ? formRows[i][f].defaultValue
+          : "";
       if (formRows[i][f].validation !== undefined) {
         validations[formRows[i][f].name] = formRows[i][f].validation;
       }
@@ -93,7 +92,13 @@ function UserForm({ fields, group }) {
             isValidating
           >
             {formRows.map((row) => (
-              <FormRow key={row[0].name} row={row} errors={errors} touched={touched} {...props} />
+              <FormRow
+                key={row[0].name}
+                row={row}
+                errors={errors}
+                touched={touched}
+                {...props}
+              />
             ))}
             <MDBox mt={4} mb={1}>
               <MDButton
@@ -115,63 +120,7 @@ function UserForm({ fields, group }) {
 
 // Setting default values for the props of UserForm
 UserForm.defaultProps = {
-  fields: [
-    [
-      { name: "group", type: "hidden", defaultValue: "client" },
-      {
-        label: "First name",
-        name: "firstName",
-        id: "firstName",
-        validation: Yup.string().required("First name is required"),
-      },
-      {
-        label: "Last name",
-        name: "lastName",
-        validation: Yup.string().required("Last name is required"),
-      },
-    ],
-    [
-      {
-        label: "Username",
-        name: "username",
-        validation: Yup.string().required("Username is required"),
-      },
-      {
-        label: "Email",
-        name: "email",
-        type: "email",
-        validation: Yup.string().email("Invalid email").required("Email is required"),
-      },
-    ],
-    [
-      {
-        label: "Mobile",
-        name: "mobile",
-        validation: Yup.string().required("Mobile is required"),
-      },
-      {
-        label: "Address",
-        name: "address",
-        validation: Yup.string().required("Address is required"),
-      },
-    ],
-    [
-      {
-        label: "Password",
-        name: "password",
-        type: "password",
-        validation: Yup.string()
-          .required("Password is required")
-          .min(5, "Your password is too short."),
-      },
-      {
-        label: "Confirm Password",
-        name: "confirmPassword",
-        type: "password",
-        validation: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
-      },
-    ],
-  ],
+  fields: [],
   group: "",
 };
 
