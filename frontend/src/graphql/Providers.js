@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import React from "react";
 
 // import { createHttpLink } from "apollo-link-http";
@@ -6,10 +7,12 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 // import { onError } from "@apollo/client/link/error";
 import { setContext } from "apollo-link-context";
 
-// const NEXT_SERVER = process.env.NEXT_SERVER
-const NEXT_SERVER = "http://127.0.0.1:8000";
+console.log( process );
+console.log(",,,", process.env.REACT_APP_SERVER_URL);
 
-const httpLink = createUploadLink({ uri: `${NEXT_SERVER}/graphql/` });
+const { REACT_APP_SERVER_URL } = process.env;
+
+const httpLink = createUploadLink({ uri: `${REACT_APP_SERVER_URL}/graphql/` });
 
 const authLink = setContext(() => {
   const token = localStorage.getItem("jwtToken");

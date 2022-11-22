@@ -1,0 +1,11 @@
+const consoleWarn = console.warn;
+const SUPPRESSED_WARNINGS = ['arning text - I will n'];
+
+console.warn = function filterWarnings(msg, ...args) {
+    if (!SUPPRESSED_WARNINGS.some((entry) => msg.includes(entry))) {
+        consoleWarn(msg, ...args);
+    }
+};
+
+console.warn('I\'ll appear as a warning');
+console.warn('warning text - I will not');
