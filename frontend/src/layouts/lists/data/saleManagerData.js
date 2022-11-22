@@ -56,7 +56,7 @@ export default function datas(data) {
       ),
       agents: <Button>{counts.agent ? counts.agent : 0} Agents</Button>,
       clients: <Button>{counts.client ? counts.client : 0} Clients</Button>,
-      actions: <ActionsButton group="manager" />,
+      actions: <ActionsButton group="manager" pk={users[i].id} />,
     });
   }
   return {

@@ -5,6 +5,7 @@ export default {
   fields: [
     [
       { name: "group", type: "hidden", defaultValue: "client" },
+      { name: "id", type: "hidden", defaultValue: "0", action: "edit" },
       {
         label: "First name",
         name: "firstName",
@@ -22,24 +23,26 @@ export default {
         label: "Email",
         name: "email",
         type: "email",
-        validation: Yup.string().email("Invalid email").required("Email is required"),
+        // validation: Yup.string()
+        //   .email("Invalid email")
+        //   .required("Email is required"),
       },
       {
         label: "Mobile",
         name: "mobile",
-        validation: Yup.string().required("Mobile is required"),
+        // validation: Yup.string().required("Mobile is required"),
       },
       {
         label: "Phone",
         name: "phone",
-        validation: Yup.string().required("Phone is required"),
+        // validation: Yup.string().required("Phone is required"),
       },
     ],
     [
       {
         label: "Address",
-        name: "address",
-        validation: Yup.string().required("Address is required"),
+        name: "addr",
+        // validation: Yup.string().required("Address is required"),
       },
       {
         label: "Budget",
@@ -52,6 +55,7 @@ export default {
         label: "Password",
         name: "password",
         defaultValue: "321321",
+        action: "add",
         validation: Yup.string()
           .required("Password is required")
           .min(5, "Your password is too short."),
@@ -61,7 +65,11 @@ export default {
         defaultValue: "321321",
         label: "Confirm Password",
         name: "confirmPassword",
-        validation: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
+        action: "add",
+        validation: Yup.string().oneOf(
+          [Yup.ref("password"), null],
+          "Passwords must match"
+        ),
       },
     ],
     [

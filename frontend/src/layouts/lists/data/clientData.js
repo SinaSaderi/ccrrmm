@@ -63,7 +63,7 @@ export default function datas(data) {
       ),
       agent: <RelatedUser relatedUsers={relUsers} value="agent" />,
       manager: <RelatedUser relatedUsers={relUsers} value="manager" />,
-      actions: <ActionsButton group="agent" />,
+      actions: <ActionsButton group="agent" pk={users[i].id} />,
     });
   }
   return {

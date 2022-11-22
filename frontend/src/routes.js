@@ -39,8 +39,8 @@ Coded by www.creative-tim.com
 import Dashboard from "layouts/dashboard";
 import Lists from "layouts/lists";
 import Billing from "layouts/billing";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
+// import RTL from "layouts/rtl";
+// import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
@@ -98,22 +98,22 @@ const routes = [
     route: "/billing",
     component: <Billing />,
   },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/rtl",
-    component: <RTL />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+  //   route: "/rtl",
+  //   component: <RTL />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
   {
     type: "collapse",
     name: "Profile",
@@ -122,6 +122,14 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile/:id",
+  //   component: <Profile />,
+  // },
   {
     type: "collapse",
     name: "Sign In",
@@ -142,32 +150,60 @@ const routes = [
     type: "route",
     name: "Add new manager",
     key: "manager-form",
-    route: "/managers/new",
+    route: "/managers/add",
     component: <UserForm group="manager" title="Add New Sale Manager" />,
+  },
+  {
+    type: "route",
+    name: "Edit manager",
+    key: "manager-form",
+    route: "/managers/edit/:id",
+    component: <UserForm group="manager" title="Edit Sale Manager" />,
   },
   {
     type: "route",
     name: "Add new agent",
     key: "agent-form",
-    route: "/agents/new",
+    route: "/agents/add",
     title: "Add New Agent",
     component: <UserForm group="agent" title="Add New Agent" />,
   },
   {
     type: "route",
+    name: "Edit agent",
+    key: "agent-form",
+    route: "/agents/edit/:id",
+    component: <UserForm group="agent" title="Edit Agent" />,
+  },
+  {
+    type: "route",
     name: "Add new client",
     key: "client-form",
-    route: "/clients/new",
+    route: "/clients/add",
     title: "Add New Client",
     component: <UserForm group="client" title="Add New Client" />,
   },
   {
     type: "route",
+    name: "Edit client",
+    key: "client-form",
+    route: "/clients/edit/:id",
+    component: <UserForm group="client" title="Edit Client" />,
+  },
+  {
+    type: "route",
     name: "Add new user",
     key: "user-form",
-    route: "/users/new",
+    route: "/users/add",
     title: "Add New User",
     component: <UserForm group="user" title="Add New User" />,
+  },
+  {
+    type: "route",
+    name: "Edit user",
+    key: "user-form",
+    route: "/users/edit/:id",
+    component: <UserForm group="user" title="Edit User" />,
   },
 ];
 

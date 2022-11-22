@@ -5,6 +5,7 @@ export default {
   fields: [
     [
       { name: "group", type: "hidden", defaultValue: "user" },
+      { name: "id", type: "hidden", defaultValue: "0", action: "edit" },
       {
         label: "User Type",
         name: "userType",
@@ -52,7 +53,7 @@ export default {
       },
       {
         label: "Address",
-        name: "address",
+        name: "addr",
         validation: Yup.string().required("Address is required"),
       },
     ],
@@ -61,6 +62,7 @@ export default {
         label: "Password",
         name: "password",
         type: "password",
+        action: "add",
         validation: Yup.string()
           .required("Password is required")
           .min(5, "Your password is too short."),
@@ -69,6 +71,7 @@ export default {
         label: "Confirm Password",
         name: "confirmPassword",
         type: "password",
+        action: "add",
         validation: Yup.string().oneOf(
           [Yup.ref("password"), null],
           "Passwords must match"

@@ -46,8 +46,16 @@ import createCache from "@emotion/cache";
 // Material Dashboard 2 React routes
 import routes from "routes";
 
+// snackBar
+import Notify from "components/Common/Notify";
+// import { SnackbarProvider, useSnackbar } from "notistack";
+
 // Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import {
+  useMaterialUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "context";
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
@@ -67,7 +75,8 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
-  const { pathname } = useLocation();
+  // const [openAlarm, setOpenAlaram ] = useState(false);
+  const location = useLocation();
 
   // Cache for the rtl
   useMemo(() => {
@@ -96,18 +105,30 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
     document.body.setAttribute("dir", direction);
   }, [direction]);
 
+  // const { enqueueSnackbar } = useSnackbar();
+
+  // const handleSnakClick = () => {
+  //   enqueueSnackbar("I love snacks.");
+  // };
+
+  // const handleSnakClickVariant = (variant) => () => {
+  //   // variant could be success, error, warning, info, or default
+  //   enqueueSnackbar("This is a success message!", { variant });
+  // };
+
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-  }, [pathname]);
+  }, [location.pathname]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -116,7 +137,14 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={route.component}
+            key={route.key}
+          />
+        );
       }
 
       return null;
@@ -154,7 +182,11 @@ export default function App() {
           <>
             <Sidenav
               color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+              brand={
+                (transparentSidenav && !darkMode) || whiteSidenav
+                  ? brandDark
+                  : brandWhite
+              }
               brandName="Real State CRM"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
@@ -178,12 +210,17 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brand={
+              (transparentSidenav && !darkMode) || whiteSidenav
+                ? brandDark
+                : brandWhite
+            }
             brandName="Real State CRM"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
+          <Notify />
           <Configurator />
           {configsButton}
         </>

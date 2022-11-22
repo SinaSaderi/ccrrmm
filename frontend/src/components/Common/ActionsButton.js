@@ -12,6 +12,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import PropTypes from "prop-types";
 
+import { Link } from "react-router-dom";
+
 const StyledMenu = styled((props) => (
   <Menu
     elevation={0}
@@ -41,13 +43,16 @@ const StyledMenu = styled((props) => (
         marginRight: theme.spacing(1.5),
       },
       "&:active": {
-        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity
+        ),
       },
     },
   },
 }));
 
-export default function ActionsButton({ group }) {
+export default function ActionsButton({ group, pk }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -81,7 +86,12 @@ export default function ActionsButton({ group }) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem
+          component={Link}
+          onClick={handleClose}
+          disableRipple
+          to={`edit/${pk}`}
+        >
           <EditIcon color="warning" />
           Edit
         </MenuItem>
@@ -106,9 +116,11 @@ export default function ActionsButton({ group }) {
 // Setting default values for the props of MDButton
 ActionsButton.defaultProps = {
   group: "client",
+  pk: null,
 };
 
 // Typechecking props for the MDButton
 ActionsButton.propTypes = {
   group: PropTypes.oneOf(["user", "manager", "agent", "client"]),
+  pk: PropTypes.string,
 };

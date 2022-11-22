@@ -48,7 +48,7 @@ const REGISTER_USER = gql`
         firstName: $firstName
         lastName: $lastName
         mobile: $mobile
-        address: $address
+        addr: $address
         email: $email
         username: $username
         password: $password

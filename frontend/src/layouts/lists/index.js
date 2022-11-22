@@ -39,7 +39,7 @@ import ErrorComponent from "components/ErrorComponent";
 
 import { modules } from "util/modules";
 
-import USERS_LIST from "layouts/lists/Queries";
+import { USERS_LIST } from "layouts/lists/Queries";
 
 import Icon from "@mui/material/Icon";
 
@@ -79,8 +79,9 @@ function Lists({ group, title }) {
                 </MDTypography>
                 <MDButton
                   variant="gradient"
+                  color="primary"
                   component={Link}
-                  to={`/${group}s/new`}
+                  to={`/${group}s/add`}
                 >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                   &nbsp;Add new {group}
@@ -92,9 +93,9 @@ function Lists({ group, title }) {
                     // eslint-disable-next-line no-undef
                     table={{ columns: uColumns, rows: uRows }}
                     canSearch
-                    isSorted={false}
-                    entriesPerPage={false}
-                    showTotalEntries={false}
+                    isSorted
+                    entriesPerPage
+                    showTotalEntries
                     noEndBorder
                   />
                 )}

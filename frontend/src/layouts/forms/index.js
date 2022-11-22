@@ -13,6 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import { Link } from "react-router-dom";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -31,18 +33,7 @@ import Footer from "examples/Footer";
 // import DataTable from "examples/Tables/DataTable";
 import MDButton from "components/MDButton";
 
-// eslint-disable-next-line import/no-named-as-default
-// Graphql components
-// import { useQuery } from "@apollo/client";
-// import LoadingComponent from "components/LoadingComponent";
-// import ErrorComponent from "components/ErrorComponent";
-
-// import saleManagerData from "layouts/lists/data/saleManagerData";
-// import agentData from "layouts/lists/data/agentData";
-
-// import USERS_LIST from "layouts/lists/Queries";
-
-import Icon from "@mui/material/Icon";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { modules } from "util/modules";
 
 function Forms({ group, title }) {
@@ -67,9 +58,14 @@ function Forms({ group, title }) {
                 <MDTypography variant="h3" color="white">
                   {title}
                 </MDTypography>
-                <MDButton variant="gradient">
-                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Add new {group}
+                <MDButton
+                  variant="gradient"
+                  component={Link}
+                  to={`/${group}s`}
+                  color="primary"
+                >
+                  <ArrowBackIcon fontSize="large" sx={{ fontSize: 40 }} />
+                  &nbsp;Back to list
                 </MDButton>
               </MDBox>
               <MDBox px={3}>

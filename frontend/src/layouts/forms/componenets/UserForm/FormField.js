@@ -33,6 +33,7 @@ function FormField(props) {
   // );
 
   if (field.type === "hidden") {
+    console.log("values[field.name]values[field.name]", values[field.name]);
     return (
       <TextField
         sx={{ display: "none" }}
@@ -45,6 +46,7 @@ function FormField(props) {
   }
 
   if (field.fiel_type === "select") {
+    console.log("values[field.name]", values[field.name], values);
     return (
       <MDBox width="100%" flexDirection="row" pt={2} pl={3}>
         <FormControl

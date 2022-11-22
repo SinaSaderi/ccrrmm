@@ -5,7 +5,7 @@ from .models import *
 from .defs import *
 
 from django.contrib.auth.hashers import make_password
-from user.validators import validate_create_user, validate_login
+from user.validators import validate_create_user, validate_login, validate_update_user
 from user.utils import generate_token, verify_token
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,9 +15,7 @@ from django.contrib.auth.models import Group
 from graphene_django.filter import DjangoFilterConnectionField
 def get_user(info):
     auth_header = info.context.META.get('HTTP_AUTHORIZATION')
-    print("auth_header", auth_header)
     payload = verify_token(auth_header)
-    print("payload", payload)
     if payload['uid'] is not None:
         return User.objects.get(pk=payload['uid'])
     return None
@@ -26,7 +24,7 @@ def get_user(info):
 class Query(graphene.ObjectType):
 
     users = graphene.List(UserType, group=graphene.String())
-    user = graphene.Field(UserType, id=graphene.Int())
+    user = graphene.Field(UserType, pk=graphene.String())
 
     groups = graphene.List(GroupType)
     group = graphene.Field(GroupType, id=graphene.Int())
@@ -43,6 +41,48 @@ class Query(graphene.ObjectType):
             return User.objects.filter(groups__name=group)
         
         return []
+    
+    def resolve_user(self, info, **kwargs):
+        pk = kwargs.get("pk")
+        if pk is not None:
+            return User.objects.get(pk=pk)
+        return
+
+
+
+class UpdateUser(graphene.Mutation):
+    class Arguments:
+        input = UserInput(required=True)
+
+    ok = graphene.Boolean()
+    user = graphene.Field(UserType)
+    errors = graphene.types.generic.GenericScalar()
+
+    @staticmethod
+    def mutate(root, info, input=None):
+        # TODO Store token
+
+        errors, valid = validate_update_user(input)
+
+        print("eeeeeeeeerrors", type(errors))
+
+        if not valid:
+            return CreateUser(ok=0, errors=errors)
+            raise Exception(errors)
+
+        ok = valid
+
+        print("inputinput", input)
+
+        user_instance = User.objects.get(pk=int(input.id))
+        for field, value in input.items():
+            setattr(user_instance, field, value)
+
+        user_instance.save()
+        print("user_instance", user_instance)
+
+        return UpdateUser(ok=True, errors=errors, user=user_instance)
+
 
 
 class CreateUser(graphene.Mutation):
@@ -54,23 +94,18 @@ class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
     errors = graphene.String()
 
-    
-
     @staticmethod
     def mutate(root, info, input=None):
-        # TODO Store token
-
         errors, valid = validate_create_user(input)
 
         if not valid:
+            return CreateUser(ok=0, errors=errors, user=User.objects.get(id=2))
             raise Exception(errors)
 
         ok = valid
 
         if input.group == "client":
             input.username = input.email
-
-        print("UUUUU", input)
 
         user_instance = User.objects.create_user(
             email=input.email,
@@ -79,14 +114,12 @@ class CreateUser(graphene.Mutation):
             first_name = input.first_name,
             last_name = input.last_name,
             mobile = input.mobile,
-            addr = input.address,
+            addr = input.addr,
             customer = Customer.objects.get(pk=1),
             realestate_commision = input.realestate_commision,
             agent_commision = input.agent_commision,
             budget = input.budget,
         )
-
-        print("******", user_instance)
 
         group = input.group
         if input.userType is not None and input.group == "user":
@@ -97,7 +130,7 @@ class CreateUser(graphene.Mutation):
 
         token = generate_token(user_instance)
 
-        return CreateUser(ok=ok, errors=errors, token=token, user=user_instance, group=input.group)
+        return CreateUser(ok=ok, errors=errors, token="12334", user=user_instance)
 
 
 
@@ -137,6 +170,7 @@ class LoginUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
+    update_user = UpdateUser.Field()
     login_user = LoginUser.Field()
     
 

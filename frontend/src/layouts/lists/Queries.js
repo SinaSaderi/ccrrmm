@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const USER_FIELDS = gql`
+export const USER_FIELDS = gql`
   fragment UserFields on UserType {
     id
     firstName
@@ -8,14 +8,17 @@ const USER_FIELDS = gql`
     username
     email
     mobile
+    addr
     budget
+    realestateCommision
+    agentCommision
     groups {
       name
     }
   }
 `;
 
-const USERS_LIST = gql`
+export const USERS_LIST = gql`
   ${USER_FIELDS}
   query users($group: String) {
     users(group: $group) {
@@ -27,4 +30,14 @@ const USERS_LIST = gql`
   }
 `;
 
-export default USERS_LIST;
+export const USER_DATA = gql`
+  ${USER_FIELDS}
+  query user($pk: String!) {
+    user(pk: $pk) {
+      ...UserFields
+      relatedUsers {
+        ...UserFields
+      }
+    }
+  }
+`;

@@ -26,14 +26,18 @@ import { MaterialUIControllerProvider } from "context";
 // Graphql provider
 import GqlProvider from "graphql/Providers";
 
+import { LoadingProvider } from "context/loading";
+
 ReactDOM.render(
   <AuthProvider>
     <GqlProvider>
-      <BrowserRouter>
-        <MaterialUIControllerProvider>
-          <App />
-        </MaterialUIControllerProvider>
-      </BrowserRouter>
+      <LoadingProvider>
+        <BrowserRouter>
+          <MaterialUIControllerProvider>
+            <App />
+          </MaterialUIControllerProvider>
+        </BrowserRouter>
+      </LoadingProvider>
     </GqlProvider>
   </AuthProvider>,
   document.getElementById("root")

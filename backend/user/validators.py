@@ -52,3 +52,19 @@ def validate_create_user(input):
         errors["confirmPassword"] = "Passwords must match"
 
     return [errors, len(errors) < 1]
+
+def validate_update_user(input):
+
+    errors = {}
+
+    regex = '^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$'
+
+    try:
+        user = User.objects.get(pk=input.id)
+    except User.DoesNotExist:
+        user = None
+
+    if input.email.strip() == '':
+        errors["email"] = "Email must not be empty"
+
+    return [errors, len(errors) < 1]
