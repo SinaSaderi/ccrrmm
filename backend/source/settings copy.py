@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 3rd party
+    "graphene_django",
     "corsheaders",
     'rest_framework',
     "ckeditor",
@@ -47,11 +48,18 @@ INSTALLED_APPS = [
     # insider
     'user',
     'project',
+    'customer',
+    'default',
 ]
+
+GRAPHENE = {
+    "SCHEMA": "source.schema.schema"
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
