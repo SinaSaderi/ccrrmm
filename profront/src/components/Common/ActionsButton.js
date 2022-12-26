@@ -94,11 +94,11 @@ export default function ActionsButton({ group, pk }) {
         <Divider sx={{ my: 0.5 }} />
         <MenuItem onClick={handleClose} disableRipple>
           <SupportAgentIcon color="info" />
-          Add Agent
+          Assign Agent
         </MenuItem>
         <MenuItem onClick={handleClose} disableRipple>
           <ContactPhoneIcon color="success" />
-          Add Client
+          Assign Client
         </MenuItem>
       </StyledMenu>
     </div>

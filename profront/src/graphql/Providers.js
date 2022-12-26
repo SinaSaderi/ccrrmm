@@ -3,12 +3,9 @@ import React from "react";
 
 // import { createHttpLink } from "apollo-link-http";
 import { createUploadLink } from "apollo-upload-client";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from "@apollo/client";
 // import { onError } from "@apollo/client/link/error";
 import { setContext } from "apollo-link-context";
-
-console.log( process );
-console.log(",,,", process.env.REACT_APP_SERVER_URL);
 
 // const { REACT_APP_SERVER_URL } = process.env;
 const REACT_APP_SERVER_URL = "http://127.0.0.1:8000";
@@ -25,9 +22,17 @@ const authLink = setContext(() => {
   };
 });
 
+const typeDefs = gql`
+  extend type Query {
+    isLoggedIn: Boolean!
+    navItems: [ID!]!
+  }
+`;
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: authLink.concat(httpLink),
+  typeDefs,
 });
 
 // eslint-disable-next-line react/prop-types

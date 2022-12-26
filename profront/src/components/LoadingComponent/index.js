@@ -4,11 +4,11 @@ import React from "react";
 
 function loadingComponent() {
   return (
-    <idv>
+    <div>
       <div color="#252727" width="200px" size="15px">
         Loading
       </div>
-    </idv>
+    </div>
   );
 }
 

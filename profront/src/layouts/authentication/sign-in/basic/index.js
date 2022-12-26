@@ -46,6 +46,24 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/dubai-skyline.jpeg";
 
+const NAVIGATIONS = gql`
+  query navs($parent: String) {
+    navs(parent: $parent) {
+      type
+      name
+      key
+      icon
+      route
+      collapse {
+        name
+        key
+        route
+        component
+      }
+    }
+  }
+`;
+
 const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!) {
     loginUser(input: { email: $email, password: $password }) {
@@ -77,7 +95,8 @@ function Basic() {
   });
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(_, { data: { loginUser: userData } }) {
+    refetchQueries: [{ query: NAVIGATIONS }],
+    update(proxy, { data: { loginUser: userData } }) {
       context.login(userData);
       navigation("/");
     },

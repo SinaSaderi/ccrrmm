@@ -13,10 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect, useMemo, useContext } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -43,47 +43,36 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
-// Material Dashboard 2 PRO React routes
 import routes from "routes";
 
-// eslint-disable-next-line no-unused-vars
-// import Droutes from "droutes";
+// import { gql, useQuery } from "@apollo/client";
 
 // Material Dashboard 2 PRO React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
-// eslint-disable-next-line no-unused-vars
-import { ApolloClient, NormalizedCacheObject, ApolloProvider, gql, useQuery } from "@apollo/client";
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
-import { AuthContext } from "context/auth";
-
-function navigateToLogin(navigate, message) {
-  navigate(`/login`, {
-    state: {
-      msg: message,
-    },
-  });
-}
-
-function isLoggedIn() {
-  const navigation = useNavigate();
-  const location = useLocation();
-  const { user } = useContext(AuthContext);
-  const currentRoute = useMemo(() => location.pathname.split("/").slice(1)[0], [location]);
-
-  useEffect(() => {
-    if (!user && currentRoute !== "login") {
-      navigateToLogin(navigation, { text: "Login successfully", type: "success" });
-    }
-  }, [user, currentRoute, navigation]);
-}
+// const NAVIGATIONS = gql`
+//   query users($parent: String) {
+//     navs(parent: $parent) {
+//       type
+//       name
+//       key
+//       icon
+//       route
+//       collapse {
+//         name
+//         key
+//         route
+//         component
+//       }
+//     }
+//   }
+// `;
 
 export default function App() {
-  isLoggedIn();
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -97,27 +86,20 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
+  // const [routes, setRoutes] = useState([{}]);
+
   const { pathname } = useLocation();
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      // console.log("route", route);
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
+  // const routes = !loading ? data.navs : [];
 
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-        // if (!route.hasPerm) {
-        //   return (
-        //     <NeedLoginRoute exact path={route.route} element={route.component} key={route.key} />
-        //   );
-        // }
-        // return <AuthRoute exact path={route.route} element={route.component} key={route.key} />;
-      }
+  // const mroutes = useMemo(() => (data ? data.navs : [{}]), [data]);
+  // setRoutes(mroutes);
 
-      return null;
-    });
+  // if (!loading) {
+  //   setRoutes(data.navs);
+  // }
+
+  // console.log("*********", data.navs);
 
   // Cache for the rtl
   useMemo(() => {
@@ -159,6 +141,20 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
+  // eslint-disable-next-line no-unused-vars
+  const getRoutes = (allRoutes) =>
+    allRoutes.map((route) => {
+      if (route.collapse) {
+        return getRoutes(route.collapse);
+      }
+
+      if (route.route) {
+        return <Route exact path={route.route} element={route.component} key={route.key} />;
+      }
+
+      return null;
+    });
+
   const configsButton = (
     <MDBox
       display="flex"
@@ -183,6 +179,29 @@ export default function App() {
     </MDBox>
   );
 
+  // const parent = "sidebar";
+  // const { loading, error } = useQuery(NAVIGATIONS, {
+  //   variables: { parent },
+  //   onCompleted: (data) => {
+  //     console.log("sddd", data);
+  //     // setRoutes(data.navs);
+  //   },
+  // });
+
+  // // console.log("111", data);
+  // if (loading) {
+  //   return "Loading...";
+  // }
+  // if (error) {
+  //   return `Error! ${error.message}`;
+  // }
+
+  // const routes = useMemo(() => (data ? data.navs : [{}]), [data]);
+
+  // useEffect(() => {
+  //   setRoutes(data ? data.navs : [{}]);
+  // }, [data]);
+
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -193,7 +212,7 @@ export default function App() {
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
               brandName="Material Dashboard PRO"
-              routes={routes}
+              // routes={!loading ? routes : [{}]}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -203,8 +222,8 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboards" />} />
+          {/* {!loading && getRoutes(routes)} */}
+          <Route path="*" element={<Navigate to="/dashboards/analytics" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -213,7 +232,6 @@ export default function App() {
       <CssBaseline />
       {layout === "dashboard" && (
         <>
-          {/* <Droutes /> */}
           <Sidenav
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
@@ -228,8 +246,8 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboards" />} />
+        {/* {!loading && getRoutes(routes)} */}
+        <Route path="*" element={<Navigate to="/dashboards/analytics" />} />
       </Routes>
     </ThemeProvider>
   );

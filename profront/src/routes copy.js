@@ -79,8 +79,6 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 // Images
 import profilePicture from "assets/images/team-3.jpg";
 
-// import navs from "graphql/Cache";
-
 const routes = [
   {
     type: "collapse",
@@ -103,7 +101,7 @@ const routes = [
       {
         name: "Logout",
         key: "logout",
-        route: "/login",
+        route: "/authentication/sign-in/basic",
         component: <SignInBasic />,
       },
     ],
@@ -113,7 +111,7 @@ const routes = [
     type: "collapse",
     name: "Dashboards",
     key: "dashboards",
-    icon: "dashboard",
+    icon: <Icon fontSize="medium">dashboard</Icon>,
     collapse: [
       {
         name: "Analytics",
@@ -124,7 +122,7 @@ const routes = [
       {
         name: "Sales",
         key: "sales",
-        route: "/dashboards",
+        route: "/dashboards/sales",
         component: <Sales />,
       },
     ],
@@ -422,7 +420,7 @@ const routes = [
         collapse: [
           {
             name: "Basic",
-            key: "basic-login",
+            key: "basic",
             route: "/authentication/sign-in/basic",
             component: <SignInBasic />,
           },
@@ -446,7 +444,7 @@ const routes = [
         collapse: [
           {
             name: "Cover",
-            key: "sign-up-cover",
+            key: "cover",
             route: "/authentication/sign-up/cover",
             component: <SignUpCover />,
           },
@@ -458,7 +456,7 @@ const routes = [
         collapse: [
           {
             name: "Cover",
-            key: "reset-password-cover",
+            key: "cover",
             route: "/authentication/reset-password/cover",
             component: <ResetCover />,
           },

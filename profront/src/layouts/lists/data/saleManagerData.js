@@ -38,33 +38,53 @@ export default function datas(data) {
 
     // const [key, order] = entry;
     orderRows.push({
-      full_name: <MDText text={`${users[i].firstName} ${users[i].lastName}`} />,
-      username: (
-        <MDTypography variant="string" color="text" fontWeight="medium">
-          {users[i].username}
-        </MDTypography>
-      ),
-      email: (
-        <MDTypography variant="string" color="text" fontWeight="medium">
-          {users[i].email}
-        </MDTypography>
-      ),
-      mobile: (
-        <MDTypography variant="string" color="text" fontWeight="medium">
-          {users[i].mobile}
-        </MDTypography>
-      ),
-      agents: <Button>{counts.agent ? counts.agent : 0} Agents</Button>,
+      full_name: `${users[i].firstName} ${users[i].lastName}`,
+      username: users[i].username,
+      email: users[i].email,
+      mobile: users[i].mobile,
+      agents: <Button name="agent_text">{counts.agent ? counts.agent : 0} Agents</Button>,
       clients: <Button>{counts.client ? counts.client : 0} Clients</Button>,
       actions: <ActionsButton group="manager" pk={users[i].id} />,
     });
   }
   return {
     columns: [
-      { Header: "Full Name", accessor: "full_name", align: "left" },
-      { Header: "Username", accessor: "username", align: "left" },
-      { Header: "Email", accessor: "email", align: "center" },
-      { Header: "Moile", accessor: "mobile", align: "center" },
+      {
+        Header: "Full Name",
+        accessor: "full_name",
+        Cell: ({ cell: { value } }) => <MDText name="full_name_text" text={value} />,
+        align: "left",
+      },
+      {
+        Header: "Username",
+        accessor: "username",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "left",
+      },
+      {
+        Header: "Email",
+        accessor: "email",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "center",
+      },
+      {
+        Header: "Moile",
+        accessor: "mobile",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "center",
+      },
       { Header: "Agents", accessor: "agents", align: "center" },
       { Header: "Clients", accessor: "clients", align: "center" },
       { Header: "Actions", accessor: "actions", align: "center" },

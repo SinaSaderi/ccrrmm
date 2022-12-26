@@ -55,7 +55,6 @@ function Lists({ group, title }) {
   }
 
   const listData = modules[group].data(data);
-  console.log("listDatalistData", listData);
 
   return (
     <DashboardLayout>
@@ -78,7 +77,7 @@ function Lists({ group, title }) {
                 <MDTypography variant="h3" color={modules[group].color}>
                   {title}
                 </MDTypography>
-                <MDButton variant="gradient" color="primary" component={Link} to={`/${group}s/add`}>
+                <MDButton variant="gradient" color="light" component={Link} to={`/${group}s/add`}>
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                   &nbsp;Add new {group}
                 </MDButton>

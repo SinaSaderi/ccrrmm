@@ -11,7 +11,6 @@ from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import Group
 
-
 from graphene_django.filter import DjangoFilterConnectionField
 def get_user(info):
     auth_header = info.context.META.get('HTTP_AUTHORIZATION')
@@ -64,22 +63,17 @@ class UpdateUser(graphene.Mutation):
 
         errors, valid = validate_update_user(input)
 
-        print("eeeeeeeeerrors", type(errors))
-
         if not valid:
             return CreateUser(ok=0, errors=errors)
             raise Exception(errors)
 
         ok = valid
 
-        print("inputinput", input)
-
         user_instance = User.objects.get(pk=int(input.id))
         for field, value in input.items():
             setattr(user_instance, field, value)
 
         user_instance.save()
-        print("user_instance", user_instance)
 
         return UpdateUser(ok=True, errors=errors, user=user_instance)
 
@@ -150,7 +144,6 @@ class LoginUser(graphene.Mutation):
     def mutate(root, info, input=None):
         errors, valid = validate_login(input)
         
-        print("sssssss", input)
         if not valid:
             raise Exception(errors)
         try:
@@ -158,7 +151,6 @@ class LoginUser(graphene.Mutation):
         except ObjectDoesNotExist:
             errors['general'] = 'Wrong crendetials.'
             raise Exception(errors)
-        print("uuuuu", user)
         if not check_password(input.password, user.password):
             errors['general'] = 'Wrong crendetials'
             raise Exception(errors)

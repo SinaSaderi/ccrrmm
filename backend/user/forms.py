@@ -8,9 +8,7 @@ class UserAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs) -> None:
         super(UserAdminForm, self).__init__(*args, **kwargs)
-        print("self.fields", self.fields)
         if 'related_users' in self.initial:
-            
             self.fields['related_users'].queryset = User.objects.filter(groups__name='client')
 
 class ManagerAdminForm(forms.ModelForm):
@@ -20,9 +18,7 @@ class ManagerAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs) -> None:
         super(ManagerAdminForm, self).__init__(*args, **kwargs)
-        print("self.fields", self.fields)
         if 'related_users' in self.initial:
-            
             self.fields['related_users'].queryset = User.objects.filter(groups__name__in=['client','agent'])
 
 class AgentAdminForm(forms.ModelForm):
@@ -32,7 +28,6 @@ class AgentAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs) -> None:
         super(AgentAdminForm, self).__init__(*args, **kwargs)
-        print("self.fields", self.fields)
         if 'related_users' in self.initial:
             
             self.fields['related_users'].queryset = User.objects.filter(groups__name='client')
@@ -44,8 +39,6 @@ class LeadAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs) -> None:
         super(LeadAdminForm, self).__init__(*args, **kwargs)
-        print("self.fields", self.fields)
         if 'related_users' in self.initial:
-            
             self.fields['related_users'].queryset = User.objects.filter(groups__name='client')
 

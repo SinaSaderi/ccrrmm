@@ -58,12 +58,7 @@ function Forms({ group, title }) {
                 <MDTypography variant="h3" color="white">
                   {title}
                 </MDTypography>
-                <MDButton
-                  variant="gradient"
-                  component={Link}
-                  to={`/${group}s`}
-                  color="primary"
-                >
+                <MDButton variant="gradient" color="light" component={Link} to={`/${group}s`}>
                   <ArrowBackIcon fontSize="large" sx={{ fontSize: 40 }} />
                   &nbsp;Back to list
                 </MDButton>

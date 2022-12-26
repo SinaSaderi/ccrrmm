@@ -40,27 +40,11 @@ export default function datas(data) {
 
     // const [key, order] = entry;
     orderRows.push({
-      full_name: <MDText text={`${users[i].firstName} ${users[i].lastName}`} />,
-      username: (
-        <MDTypography variant="string" color="text" fontWeight="medium">
-          {users[i].username}
-        </MDTypography>
-      ),
-      email: (
-        <MDTypography variant="string" color="text" fontWeight="medium">
-          {users[i].email}
-        </MDTypography>
-      ),
-      mobile: (
-        <MDTypography variant="string" color="text" fontWeight="medium">
-          {users[i].mobile}
-        </MDTypography>
-      ),
-      budget: (
-        <MDTypography variant="string" color="text" fontWeight="medium">
-          {users[i].budget}
-        </MDTypography>
-      ),
+      full_name: `${users[i].firstName} ${users[i].lastName}`,
+      username: users[i].username,
+      email: users[i].email,
+      mobile: users[i].mobile,
+      budget: users[i].budget,
       agent: <RelatedUser relatedUsers={relUsers} value="agent" />,
       manager: <RelatedUser relatedUsers={relUsers} value="manager" />,
       actions: <ActionsButton group="agent" pk={users[i].id} />,
@@ -68,13 +52,63 @@ export default function datas(data) {
   }
   return {
     columns: [
-      { Header: "Full Name", accessor: "full_name", align: "left" },
-      { Header: "Username", accessor: "username", align: "left" },
-      { Header: "Email", accessor: "email", align: "center" },
-      { Header: "Moile", accessor: "mobile", align: "center" },
+      {
+        Header: "Full Name",
+        accessor: "full_name",
+        Cell: ({ cell: { value } }) => <MDText text={value} />,
+        align: "left",
+      },
+      {
+        Header: "Username",
+        accessor: "username",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "left",
+      },
+      {
+        Header: "Email",
+        accessor: "email",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "center",
+      },
+      {
+        Header: "Moile",
+        accessor: "mobile",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "center",
+      },
       { Header: "Budget", accessor: "budget", align: "center" },
-      { Header: "Agent", accessor: "agent", align: "center" },
-      { Header: "Sale Manger", accessor: "manager", align: "center" },
+      {
+        Header: "Agent",
+        accessor: "agent",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "center",
+      },
+      {
+        Header: "Sale Manger",
+        accessor: "manager",
+        Cell: ({ cell: { value } }) => (
+          <MDTypography variant="string" color="text" fontWeight="medium">
+            {value}
+          </MDTypography>
+        ),
+        align: "center",
+      },
       { Header: "Actions", accessor: "actions", align: "center" },
     ],
 

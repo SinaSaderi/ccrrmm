@@ -13,7 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect, useState, useContext } from "react";
+// eslint-disable-next-line no-unused-vars
+import { useEffect, useState } from "react";
 
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
@@ -40,6 +41,8 @@ import SidenavItem from "examples/Sidenav/SidenavItem";
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
+// import { gql, useQuery } from "@apollo/client";
+
 // Material Dashboard 2 PRO React context
 import {
   useMaterialUIController,
@@ -48,23 +51,30 @@ import {
   setWhiteSidenav,
 } from "context";
 
-// Material Dashboard 2 PRO React components
-import MDAvatar from "components/MDAvatar";
-
-// Images
-import profilePicture from "assets/images/team-3.jpg";
-
-// eslint-disable-next-line no-unused-vars
-import Parser from "html-react-parser";
-
-// eslint-disable-next-line no-unused-vars
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-
-import { gql, useQuery } from "@apollo/client";
-
-import { AuthContext } from "context/auth";
-
+// const NAVIGATIONS = gql`
+//   query users($parent: String) {
+//     navs(parent: $parent) {
+//       type
+//       name
+//       key
+//       icon
+//       route
+//       collapse {
+//         name
+//         key
+//         route
+//         component
+//       }
+//     }
+//   }
+// `;
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
+  // const parent = "sidebar";
+  // const { data, loading, error } = useQuery(NAVIGATIONS, {
+  //   variables: { parent },
+  // });
+  console.log("sdsadfsadasdasdsad");
+
   const [openCollapse, setOpenCollapse] = useState(false);
   const [openNestedCollapse, setOpenNestedCollapse] = useState(false);
   const [controller, dispatch] = useMaterialUIController();
@@ -75,35 +85,15 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const items = pathname.split("/").slice(1);
   const itemParentName = items[1];
   const itemName = items[items.length - 1];
-  const { user } = useContext(AuthContext);
-
-  const NAVIGATIONS = gql`
-    query navs($parent: String) {
-      navs(parent: $parent) {
-        type
-        name
-        key
-        icon
-        route
-        noCollapse
-        collapse {
-          name
-          key
-          route
-          component
-        }
-      }
-    }
-  `;
-  const parent = "sidebar";
   // eslint-disable-next-line no-unused-vars
-  const { data, loading, error } = useQuery(NAVIGATIONS, {
-    variables: { parent },
-  });
+  // const [routes, setRoutes] = useState([{}]);
 
-  if (error) {
-    console.log("Error loading navigation", error);
-  }
+  // useEffect(() => {
+  //   console.log("dddddd", data);
+  //   setRoutes(data ? data.navs : [{}]);
+  // }, [loading]);
+
+  // const routes = useMemo(() => (data ? data.navs : [{}]), [loading]);
 
   let textColor = "white";
 
@@ -205,99 +195,94 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     });
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = !loading
-    ? data.navs.map(({ type, name, icon, title, collapse, noCollapse, key, href, route }) => {
-        let returnValue;
-        // const DynamicComponent = lazy(() => import(`./${componentName}`));
+  const renderRoutes = routes.map(
+    ({ type, name, icon, title, collapse, noCollapse, key, href, route }) => {
+      let returnValue;
 
-        let itemIcon = typeof icon === "string" ? <Icon>{icon}</Icon> : icon;
-
-        let text = name;
-        if (key === "full-name") {
-          text = `${user.firstName} ${user.lastName}`;
-          itemIcon = <MDAvatar src={profilePicture} alt="Brooklyn Alice" size="sm" />;
-        }
-        // const text = key === "full-name" ? `${user.firstName} ${user.lastName}` : name;
-
-        if (type === "collapse") {
-          if (href) {
-            returnValue = (
-              <Link
-                href={href}
-                key={key}
-                target="_blank"
-                rel="noreferrer"
-                sx={{ textDecoration: "none" }}
-              >
-                <SidenavCollapse
-                  name={text}
-                  icon={itemIcon}
-                  active={key === collapseName}
-                  noCollapse={noCollapse}
-                />
-              </Link>
-            );
-          } else if (noCollapse && route) {
-            returnValue = (
-              <NavLink to={route} key={key}>
-                <SidenavCollapse
-                  name={text}
-                  icon={itemIcon}
-                  noCollapse={noCollapse}
-                  active={key === collapseName}
-                >
-                  {collapse ? renderCollapse(collapse) : null}
-                </SidenavCollapse>
-              </NavLink>
-            );
-          } else {
-            returnValue = (
+      if (type === "collapse") {
+        if (href) {
+          returnValue = (
+            <Link
+              href={href}
+              key={key}
+              target="_blank"
+              rel="noreferrer"
+              sx={{ textDecoration: "none" }}
+            >
               <SidenavCollapse
-                key={key}
-                name={text}
-                icon={itemIcon}
+                name={name}
+                icon={icon}
                 active={key === collapseName}
-                open={openCollapse === key}
-                onClick={() =>
-                  openCollapse === key ? setOpenCollapse(false) : setOpenCollapse(key)
-                }
+                noCollapse={noCollapse}
+              />
+            </Link>
+          );
+        } else if (noCollapse && route) {
+          returnValue = (
+            <NavLink to={route} key={key}>
+              <SidenavCollapse
+                name={name}
+                icon={icon}
+                noCollapse={noCollapse}
+                active={key === collapseName}
               >
                 {collapse ? renderCollapse(collapse) : null}
               </SidenavCollapse>
-            );
-          }
-        } else if (type === "title") {
-          returnValue = (
-            <MDTypography
-              key={key}
-              color={textColor}
-              display="block"
-              variant="caption"
-              fontWeight="bold"
-              textTransform="uppercase"
-              pl={3}
-              mt={2}
-              mb={1}
-              ml={1}
-            >
-              {title}
-            </MDTypography>
+            </NavLink>
           );
-        } else if (type === "divider") {
+        } else {
           returnValue = (
-            <Divider
+            <SidenavCollapse
               key={key}
-              light={
-                (!darkMode && !whiteSidenav && !transparentSidenav) ||
-                (darkMode && !transparentSidenav && whiteSidenav)
-              }
-            />
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+              open={openCollapse === key}
+              onClick={() => (openCollapse === key ? setOpenCollapse(false) : setOpenCollapse(key))}
+            >
+              {collapse ? renderCollapse(collapse) : null}
+            </SidenavCollapse>
           );
         }
+      } else if (type === "title") {
+        returnValue = (
+          <MDTypography
+            key={key}
+            color={textColor}
+            display="block"
+            variant="caption"
+            fontWeight="bold"
+            textTransform="uppercase"
+            pl={3}
+            mt={2}
+            mb={1}
+            ml={1}
+          >
+            {title}
+          </MDTypography>
+        );
+      } else if (type === "divider") {
+        returnValue = (
+          <Divider
+            key={key}
+            light={
+              (!darkMode && !whiteSidenav && !transparentSidenav) ||
+              (darkMode && !transparentSidenav && whiteSidenav)
+            }
+          />
+        );
+      }
 
-        return returnValue;
-      })
-    : [];
+      return returnValue;
+    }
+  );
+
+  // if (loading) {
+  //   return "Loading...";
+  // }
+  // if (error) {
+  //   return `Error! ${error.message}`;
+  // }
 
   return (
     <SidenavRoot
@@ -337,7 +322,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           (darkMode && !transparentSidenav && whiteSidenav)
         }
       />
-      <List>{!loading && renderRoutes}</List>
+      <List>{renderRoutes}</List>
     </SidenavRoot>
   );
 }

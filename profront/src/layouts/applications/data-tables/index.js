@@ -29,8 +29,6 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import dataTableData from "layouts/applications/data-tables/data/dataTableData";
 
-console.log("dataTableData----", dataTableData);
-
 function DataTables() {
   return (
     <DashboardLayout>
