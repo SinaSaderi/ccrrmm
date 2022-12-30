@@ -1,7 +1,5 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import EditIcon from "@mui/icons-material/Edit";
 import Divider from "@mui/material/Divider";
@@ -9,45 +7,11 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
 import PropTypes from "prop-types";
-
+import { useDeleteUserMutation } from "graphql/queries/user/mutation";
+import { USERS_LIST } from "graphql/queries/user/queries";
 import { Link } from "react-router-dom";
-
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "right",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "right",
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  "& .MuiPaper-root": {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    boxShadow:
-      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-    "& .MuiMenu-list": {
-      padding: "4px 0",
-    },
-    "& .MuiMenuItem-root": {
-      "& .MuiSvgIcon-root": {
-        fontSize: 18,
-        marginRight: theme.spacing(1.5),
-      },
-      "&:active": {
-        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-      },
-    },
-  },
-}));
+import StyledMenu from "./StyledMenui";
 
 export default function ActionsButton({ group, pk }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -58,6 +22,20 @@ export default function ActionsButton({ group, pk }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const { deleteUser } = useDeleteUserMutation();
+
+  async function deleteEventHandler() {
+    try {
+      await deleteUser({
+        variables: { id: pk },
+        refetchQueries: [{ query: USERS_LIST, variables: { group: "agent" } }],
+      });
+      handleClose();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div>
@@ -87,7 +65,7 @@ export default function ActionsButton({ group, pk }) {
           <EditIcon color="warning" />
           Edit
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={() => deleteEventHandler(pk)} disableRipple>
           <ClearIcon color="error" />
           Delete
         </MenuItem>

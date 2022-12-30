@@ -50,31 +50,6 @@ function authReducer(state, action) {
 function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // const NAVIGATIONS = gql`
-  //   query navs($parent: String) {
-  //     navs(parent: $parent) {
-  //       type
-  //       name
-  //       key
-  //       icon
-  //       route
-  //       collapse {
-  //         name
-  //         key
-  //         route
-  //         component
-  //       }
-  //     }
-  //   }
-  // `;
-  // const parent = "sidenav";
-  // const { data } = useQuery({
-  //   query: NAVIGATIONS,
-  //   variables: { parent },
-  // });
-
-  // console.log("data", data);
-
   function login(userData) {
     localStorage.setItem("jwtToken", userData.token);
     isLoggedInVar(true);

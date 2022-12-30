@@ -206,7 +206,7 @@ function DataTable({
           {page.map((row, key) => {
             prepareRow(row);
             return (
-              <TableRow {...row.getRowProps()}>
+              <TableRow {...row.getRowProps()} style={{ transition: "all 0.5s ease-in-out" }}>
                 {row.cells.map((cell) => (
                   <DataTableBodyCell
                     noBorder={noEndBorder && rows.length - 1 === key}

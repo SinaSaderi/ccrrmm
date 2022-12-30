@@ -32,6 +32,38 @@ class Query(graphene.ObjectType):
         return Group.objects.all()
 
     def resolve_users(self, info, **kwargs):
+
+        # agent_user_1 = User.objects.create(
+        #     first_name='Jane',
+        #     last_name='Doe',
+        #     username='jane.doe',
+        #     email='jane.doe@example.com',
+        #     mobile='+1234567890'
+        # )
+
+        # # Create the second agent user
+        # agent_user_2 = User.objects.create(
+        #     first_name='John',
+        #     last_name='Doe',
+        #     username='john.doe',
+        #     email='john.doe@example.com',
+        #     mobile='+1234567891'
+        # )
+
+        # # Create the third agent user
+        # agent_user_3 = User.objects.create(
+        #     first_name='Jack',
+        #     last_name='Doe',
+        #     username='jack.doe',
+        #     email='jack.doe@example.com',
+        #     mobile='+1234567892'
+        # )
+
+        # # Insert the rows into the `user_user_group` table
+        # agent_user_1.groups.add(2)
+        # agent_user_2.groups.add(2)
+        # agent_user_3.groups.add(2)
+        
         group = kwargs.get("group", None)
         user = get_user(info)
         if group is not None and group != "":
@@ -160,9 +192,26 @@ class LoginUser(graphene.Mutation):
 
         return LoginUser(ok=ok, token=token, user=user)
 
+class DeleteUserMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+
+    ok = graphene.Boolean()
+    user = graphene.Field(UserType)
+    errors = graphene.List(graphene.String)
+
+    def mutate(self, info, id):
+        user = User.objects.get(pk=id)
+        if user is None:
+            return DeleteUserMutation(ok=False, errors=['User not found'])
+
+        user.delete()
+        return DeleteUserMutation(ok=True, user=user)
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     update_user = UpdateUser.Field()
+    delete_user = DeleteUserMutation.Field()
     login_user = LoginUser.Field()
     
 

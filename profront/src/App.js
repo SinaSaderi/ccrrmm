@@ -108,12 +108,6 @@ export default function App() {
 
       if (route.route) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
-        // if (!route.hasPerm) {
-        //   return (
-        //     <NeedLoginRoute exact path={route.route} element={route.component} key={route.key} />
-        //   );
-        // }
-        // return <AuthRoute exact path={route.route} element={route.component} key={route.key} />;
       }
 
       return null;
